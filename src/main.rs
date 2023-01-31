@@ -49,8 +49,8 @@ fn build_ui(app: &Application) {
 }
 
 
-fn button_text()  -> String{   
-    let current_dir = env::current_dir().unwrap();
-    let current_dir_str = current_dir.to_str().unwrap();
-    current_dir_str.to_string()
-}
+//fn button_text()  -> String{   
+//    let current_dir = env::current_dir().unwrap();
+//   let current_dir_str = current_dir.to_str().unwrap();
+//    current_dir_str.to_string()
+//}
