@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 fltk = "1.3.27"
 gtk = "0.16.2"
+regex = "1.7.1"
+rusty-machine = "0.5.4"
