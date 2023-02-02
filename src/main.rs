@@ -61,7 +61,7 @@ fn build_ui(app: &Application) {
                     let dir_path = file_path.to_str().unwrap();
                     // a vector of strings with the file names
                     let files = read_dir(dir_path);
-                    
+
                     // a vector of strings with the regexes
                     let regexes = vec![
                         Regex::new(r"^\d{4}-\d{2}-\d{2}").unwrap(),
@@ -75,7 +75,15 @@ fn build_ui(app: &Application) {
                     // bind a variable to the filtered files if their base is not empty
                     let groups = groups.into_iter().filter(|(base, _)| !base.is_empty());
                     // flatten the groups into a vector of strings
-                    let groups = groups.flat_map(|(_, files)| files);
+                    //let groups = groups.flat_map(|(_, files)| files);
+                    //flatten the groups but keep them visually separated and the base name visually on top
+                    let groups = groups.flat_map(|(base, files)| {
+                        let mut files = files;
+                        files.insert(0, base);
+                        files
+                    });
+
+                   
                     //set the label to the flattened groups
                     label.set_text(&groups.collect::<Vec<_>>().join("\n"));
 
