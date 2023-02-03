@@ -30,8 +30,10 @@ pub fn filter_files(files: Vec<String>, regexes: Vec<Regex>) -> Vec<String> {
 }
 
 
-// This function takes a vector of strings and groups them based on a common prefix, ignoring any numbers in the strings.
-// The function returns a HashMap where the keys are the common prefixes and the values are vectors of strings that belong to that group.
+// This function takes a vector of strings and groups them based on a common prefix,
+// ignoring any numbers in the strings.
+// The function returns a HashMap where the keys are the common prefixes 
+//and the values are vectors of strings that belong to that group.
 pub fn group_strings(strings: Vec<String>) -> HashMap<String, Vec<String>> {
     // Initialize an empty HashMap to store the groups.
     let mut groups: HashMap<String, Vec<String>> = HashMap::new();
@@ -42,6 +44,7 @@ pub fn group_strings(strings: Vec<String>) -> HashMap<String, Vec<String>> {
         // regex that matches evrything up until the last block of numbers in the string while ignoring a digit only string
         let re = Regex::new(r"(?P<base>.+?)(?:_\d+)?\.\w+$").unwrap();
 
+
         let base = if let Some(capture) = re.captures(&string).and_then(|c| c.get(1)) {
             capture.as_str().to_string()
         } else {
@@ -50,8 +53,9 @@ pub fn group_strings(strings: Vec<String>) -> HashMap<String, Vec<String>> {
 
         // remove if base is only numbers
         if base.chars().all(|c| c.is_numeric()) {
-            continue;
+                continue;
         }
+
 
             // Insert the string into the HashMap, creating a new vector for the group if it doesn't already exist.
             groups.entry(base).or_default().push(string);
@@ -60,6 +64,7 @@ pub fn group_strings(strings: Vec<String>) -> HashMap<String, Vec<String>> {
 
 
     //sort the group in groups by the numeric value part of the string
+    /* 
     for (_, group) in groups.iter_mut() {
         group.sort_by(|a, b| {
             let a = a.chars().skip_while(|c| !c.is_numeric()).collect::<String>();
@@ -67,6 +72,16 @@ pub fn group_strings(strings: Vec<String>) -> HashMap<String, Vec<String>> {
             a.cmp(&b)
         });
     }
+    */
+    for (_, group) in groups.iter_mut() {
+        group.sort_by(|a, b| {
+            let a_num = a.split('_').last().unwrap().split('.').next().unwrap().parse::<i32>().unwrap();
+            let b_num = b.split('_').last().unwrap().split('.').next().unwrap().parse::<i32>().unwrap();
+            a_num.cmp(&b_num)
+        });
+    }
+
+
 
     /* 
     // add an element to the beginning of the vector indicating only the minimum and maximum numeric values of the numeric part of the string
