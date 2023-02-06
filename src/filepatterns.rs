@@ -16,17 +16,16 @@ pub fn read_dir(dir: &str) -> Vec<String> {
 }
 
 // a function that takes a vector of strings and returns only those strings that match at least one regex from a vector of regexes
-pub fn filter_files(files: Vec<String>, regexes: Vec<Regex>) -> Vec<String> {
-    let mut filtered_files: Vec<String> = Vec::new();
-    for file in files {
-        for regex in &regexes {
-            if regex.is_match(&file) {
-                filtered_files.push(file);
-                break;
-            }
-        }
-    }
-    filtered_files
+pub fn filter_strings( file_names: Vec<String>) -> Vec<String> {
+
+    let extensions = vec!["exr", "jpg", "png"];
+    let extensions_re = extensions.join("|");
+    //let regex = Regex::new(&format!(r"(?i).*({})$", extensions_re)).unwrap();
+    let regex = Regex::new(&format!(r"(?i)\b\D\w*({})$", extensions_re)).unwrap();
+
+    
+    file_names.into_iter().filter(|s| regex.is_match(s)).collect()
+
 }
 
 
